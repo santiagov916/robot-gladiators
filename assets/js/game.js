@@ -4,24 +4,35 @@ var randomNumber = function(min, max) {
     return value;
 };
 
+var fightOrSkip = function() {
+    var promptFight = window.prompt("WOuld you like to FIGHT or SKIP this battle? Enter 'FIGHT' or 'SKIP' to choose.");
+
+    if (promptFight === "" || promptFight === null) {
+        window.alert("You need to provide a valid answer! Please try again.");
+        return fightOrSkip();
+    }
+    promptFight = promptFight.toLocaleLowerCase();
+    if (promptFight === "skip") {
+        //confirm player wants to skip 
+        var confirmSkip = window.confirm("Are you sure you'd like to quit?");
+        // if yes (true), leave fight
+        if (confirmSkip) {
+            window.alert(playerInfo.name + " has decided to skip this fight. Goodbye!");
+            // subtract money from playerInfo.money for skipping
+            playerInfo.money = Math.max(0, playerInfo.money - 10);
+            return true;
+        }
+        return false;
+    }
+}
 var fight = function(enemy) {
     // Alert players that they are starting the round
     while(playerInfo.health > 0 && enemy.health > 0) {
-        var promptFight = window.prompt("WOuld you like to FIGHT or SKIP this battle? Enter 'FIGHT' or 'SKIP' to choose.");
 
+            if(fightOrSkip()) {
 
-        if (promptFight === "skip" || promptFight === "SKIP") {
-            //confirm player wants to skip 
-            var confirmSkip = window.confirm("Are you sure you'd like to quit?");
-            // if yes (true), leave fight
-            if (confirmSkip) {
-                window.alert(playerInfo.name + " has decided to skip this fight. Goodbye!");
-                // subtract money from playerInfo.money for skipping
-                playerInfo.money = Math.max(0, playerInfo.money - 10);
-                console.log("playerInfo.money", playerInfo.money);
                 break;
-            } 
-        }
+            };
 
             //Subtract the value of `playerInfo.attack` from the value of `enemy.health` and use that result to update the value in the `enemy.health` variable
             var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
